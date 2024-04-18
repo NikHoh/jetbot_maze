@@ -89,6 +89,10 @@ At least one group participant should be familiar with:
 - the purpose of AprilTags
     - https://github.com/AprilRobotics/apriltag
     - *there are also some papers ...*
+	
+- the basic functionality of an IMU
+
+- the kinematic model of a differential drive robot 
 
 
 # Getting started
