@@ -60,7 +60,7 @@ Before starting with the instructions, some hints and links are given to provide
 # Basic Knowledge (all of you should know)
 
 Before starting, some basic knowledge should be available. In case you are not familiar with the following, read or watch some tutorials:
-- some basics in Linux (you will use Ubuntu 18.04)
+- some basics in Linux (you will use Ubuntu 20.04)
     - basic console commands `cd`, `ls`, `mkdir`, `source`, `cp`, `mv`, `rm`, `chmod`, ...
     - the purpose of `sudo`
     - the purpose of `apt-get`
@@ -113,6 +113,6 @@ https://github.com/NikHoh/apriltag-maze
 
 # More
 
-More information on set up, installation and testing of the JetBot will be available after the Hardware handover two weeks after the kickoff of the project seminar.
+More information on set up, installation and testing of the JetBot will be available after the Hardware handover roughly two weeks after the kickoff of the project seminar.
 
 
