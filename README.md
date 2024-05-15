@@ -170,14 +170,14 @@ Follow these steps to setup your JetBot:
      - `gedit ~/.bashrc`
      - add: `source /opt/ros/noetic/setup.bash`
 
-6. **Install Catkin Tools**:
+7. **Install Catkin Tools**:
    - ```sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'```
    - `wget http://packages.ros.org/ros.key -O - | sudo apt-key add -`
    - `sudo apt-get update`
    - `sudo apt-get install python3-catkin-tools`
    - For more information click [here](https://catkin-tools.readthedocs.io/en/latest/installing.html).
 
-7. **Create Workspace**:
+8. **Create Workspace**:
    - Create a workspace directory: `mkdir workspace`.
    - Navigate to the workspace: `cd workspace`.
    - Create a Catkin workspace: `mkdir catkin_ws`.
@@ -186,13 +186,13 @@ Follow these steps to setup your JetBot:
      - Initiate Catkin Workspace with: `catkin init`.
      - Build your workspace with: `catkin build`.
 
-8. **Source your Workspace Setup Script**:
+9. **Source your Workspace Setup Script**:
    - Add setup script to the Shell configuration file:
      - Open the configuration file: `gedit ~/.bashrc`
      - Add the path to your `setup.bash` file from your workspace, e.g.:
        - `source ~/workspace/catkin_ws/devel/setup.bash`
 
-9. **Install Additional Libraries**:
+10. **Install Additional Libraries**:
    - Install jetson-inference:
      - Refer to the installation guide for jetson-inference [here](https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo-2.md).
      - without PyTorch!
@@ -203,12 +203,12 @@ Follow these steps to setup your JetBot:
    - Install Adafruit_MotorHAT:
      - sudo pip install Adafruit_MotorHAT
 
-10. **Install Additional ROS Packages**:
+11. **Install Additional ROS Packages**:
 	- `sudo apt-get install ros-noetic-apriltag-ros`.
     - `sudo apt-get install ros-noetic-imu-filter-madgwick`.
     - `sudo apt-get install ros-noetic-image-pipeline`.
 	
-11. Zip download or clone this repository and put the files from the `src` and the `config` folder into the correct positions of your workspace according to the following file structure.
+12. Zip download or clone this repository and put the files from the `src` and the `config` folder into the correct positions of your workspace according to the following file structure. Then build the workspace again with `catkin build`.
 	
 ## File structure
 
