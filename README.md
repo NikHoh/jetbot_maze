@@ -394,9 +394,6 @@ You should then be able to listen to the calibrated IMU data:
             - http://wiki.ros.org/ROS/Troubleshooting
     - then you can test the JetBot without using its GUI
 
-# More
-
-More information on set up, installation and testing of the JetBot will be available in a few days.
 
 
 
