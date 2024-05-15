@@ -1,0 +1,9 @@
+<launch>
+    <!--Run motor driver-->
+    <node pkg="motor" type="motor_driver.py" name="motor_driver"/>
+
+    <!--Run motor controller-->
+    <node pkg="motor" type="motor_control.py" name="motor_control">
+       <param name="motor_config_path" type="str" value="/home/jetson/workspace/catkin_ws/config/motor/motor_config.yaml"/>
+    </node>
+</launch>

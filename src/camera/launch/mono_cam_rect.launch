@@ -1,0 +1,8 @@
+<launch>
+    <!--Run camera node-->
+    <include file="$(find camera)/launch/mono_cam.launch"/>
+
+    <!--Run image rectification node-->
+    <arg name="ROS_NAMESPACE" default="mono_cam"/>
+    <node pkg="image_proc" type="image_proc" name="image_proc" ns="$(arg ROS_NAMESPACE)"/>
+</launch>

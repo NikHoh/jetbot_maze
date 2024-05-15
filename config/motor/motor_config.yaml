@@ -1,0 +1,18 @@
+motor_characteristic:
+  left:
+    rows: 1
+    cols: 2
+    data: [11520, 0]
+  right:
+    rows: 1
+    cols: 2
+    data: [11520, 0]
+ideal_motor_characteristic:
+  left:
+    rows: 1
+    cols: 2
+    data: [11520, 0]
+  right:
+    rows: 1
+    cols: 2
+    data: [11520, 0]

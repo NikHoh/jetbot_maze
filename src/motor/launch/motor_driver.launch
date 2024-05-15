@@ -1,0 +1,4 @@
+<launch>
+    <!--Run motor driver-->
+    <node pkg="motor" type="motor_driver.py" name="motor_driver"/>
+</launch>

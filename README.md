@@ -204,8 +204,179 @@ Follow these steps to setup your JetBot:
      - sudo pip install Adafruit_MotorHAT
 
 10. **Install Additional ROS Packages**:
-    - `sudo apt-get install ros-noetic-apriltag-ros`.
+	- `sudo apt-get install ros-noetic-apriltag-ros`.
+    - `sudo apt-get install ros-noetic-imu-filter-madgwick`.
+    - `sudo apt-get install ros-noetic-image-pipeline`.
 	
+11. Zip download or clone this repository and put the files from the `src` and the `config` folder into the correct positions of your workspace according to the following file structure.
+	
+## File structure
+
+The file structure that you will create will look like: 
+
+```
+|-- workspace
+  |-- jetson-inference
+  |   |-- ```
+  |-- catkin_ws
+  |   |-- build
+  |   |   |-- ```
+  |   |-- devel
+  |   |   |-- ```
+  |   |-- logs
+  |   |   |-- ```
+  |   |-- src
+  |   |   |-- camera (*inserted from this repo*)
+  |   |   |-- demo (*inserted from this repo*)
+  |   |   |-- imu (*inserted from this repo*)
+  |   |   |-- motor (*inserted from this repo*)
+  |   |   |-- ...
+  |   |-- config
+  |   |   |-- camera (*inserted from this repo*)
+  |   |   |-- imu (*inserted from this repo*)
+  |   |   |-- motor  (*inserted from this repo*)
+  
+```
+
+## Testing JetBot
+Let's check that the different components of the robot are working under ROS.
+First open a new terminal, and start `roscore`.
+
+Important: There might be some problem when trying to rosrun python files saying that the file is not executable. You then have to change the Linux file permissions to executable (see [here](https://askubuntu.com/questions/229589/how-to-make-a-file-e-g-a-sh-script-executable-so-it-can-be-run-from-a-termi), there is also a GUI version). 
+
+### Running the motors
+Open a new terminal, and start the *motor_driver* node:
+
+`rosrun demo motor_driver.py`
+
+This Node will listen to the following topic:
+- */motor/pwm_cmd*: 
+   - Type: *motor/MotorPWM* 
+   - Values: -1.0, ..., 1.0
+
+Open a new terminal and run a some test commands:(it is recommended to initially test with JetBot up on blocks, wheels not touching the ground)
+- `rostopic pub /motor/pwm_cmd motor/MotorPWM "pwm_left: 0.4 pwm_right: 0.4"`
+   - Note: press *TAB* after the topic "/motor/pwm_cmd" to autocomplete the topic type and get the right message format. Change `0.0` to a value between `-1.0` and `1.0`.
+   - The wheels will spin for only one second. The motor driver has an integrated safety feature that causes the motors to stop if it doesn't receive any new PWM commands for one second.
+
+- `rostopic pub -r 10 /motor/pwm_cmd motor/MotorPWM "pwm_left: 0.4 pwm_right: 0.4"`
+   - Note: press *TAB* after the topic "/motor/pwm_cmd" to autocomplete the topic type and get the right message format. Change `0.0` to a value between `-1.0` and `1.0`
+   - The message will be published at a rate of `10Hz`.
+   - The wheels will keep spinning until CTRL-C is pressed.
+
+### Using the Keyboard control
+Make sure the motor node is still running.
+
+Open a new terminal and start the teleoperation node:
+
+`rosrun demo teleop_keyboard.py`
+
+This node allows you to control the left and right motor with your keyboard.
+- Press `f/v` to increase/decrease the PWM command for the left motor.
+- Press `j/n` to increase/decrease the PWM command for the right motor.
+- Press `SPACE` to stop both motors.
+- Press `CTRL-C` to quit.
+
+### Using the camera
+To begin streaming the JetBot camera, start the jetbot_camera node:
+
+`rosrun demo camera.py`
+
+The video frames will be published to the `/mono_cam/image_raw` topic as sensor_msgs::Image messages with BGR8 encoding. To test the camera feed open `rqt` in a new consol tab and select *Plugins >> Visualization >> Image View*. Next select the camera topic in the drop down menu.
+
+
+### Using the IMU
+To check if the IMU on the robot is functioning, start the node *imu_publisher* with 
+
+`rosrun demo imu_publisher.py`.
+
+If data is being read successfully, it will be published on the topics
+- `/imu/data_raw` (Orientation, angular velocity, linear acceleration) and
+- `/imu/mag` (Magnetic field)
+
+You can show all existing topics using `rostopic list` and inspect individual ones with `rostopic echo [TOPIC_NAME]`
+
+In addition you can visualize the orientation in *RVIZ*:
+1. Open `rviz` in a new consol tab.
+2. Change *Fixed Frame* to `odom`.
+3. *Add* a new viszualization: *TF*.
+4. Enable frames you want to see. (TF >> Frames >> `demo_imu_frame`). You can also disable `odom`, because it is the fixed world frame.
+5. Feel free to move the IMU and observe how the coordinate system moves along with it.
+
+
+### Build apriltag
+
+Follow the instructions from:
+
+https://github.com/AprilRobotics/apriltag_ros
+
+Make sure that you don't copy/paste comments from the section "Quickstart" blindfold. Use the correct `src` folder (see the file structure above).
+
+#### Test apriltag
+
+More information about apriltag_ros: http://wiki.ros.org/apriltag_ros
+
+Have a look at the tutorial to get an idea of what is happening: http://wiki.ros.org/apriltag_ros/Tutorials/Detection%20in%20a%20video%20stream
+
+To work properly, apriltag_ros needs:
+- A **calibrated camera**
+    - a default camera calibration is already available in the repo (ost.yaml)
+    - **BUT**: every camera behaves differently, so you should calibrate your camera yourselves:
+    ```bash
+    # Run camera node:
+    rosrun demo camera.py
+
+    # make sure the camera node is running and publishing /mono_cam/image_raw and /mono_cam/camera_info topics
+    rostopic list
+
+    # Run calibration node: (You have to adjust board size and square size!)
+    rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 image:=/mono_cam/image_raw camera_name:=/mono_cam
+    ```
+    - Move the checkerboard as shown [here](https://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration#Moving_the_Checkerboard) to gather samples.
+      - Hint: large checkerboards for calibration are available at the institute, you can use them there (write an e-mail to ask or come into the office of a WiMi)
+    - Replace the values in `~/workspace/catkin_ws/config/camera/ost_mono.yaml`.
+
+- A **rectified image**
+    - The image `image_raw` can be rectified with the help of the [ROS image_proc library](http://wiki.ros.org/image_proc).
+    - The respective node is already included in the launch file, which is described next.
+    - You don't have to do something here but should understand how image_proc is integrated into the launch file.
+    ```launch
+    <launch>
+      <!--Run camera node-->
+      <include file="$(find camera)/launch/mono_cam.launch"/>
+
+      <!--Run image rectification node-->
+      <arg name="ROS_NAMESPACE" default="mono_cam"/>
+      <node pkg="image_proc" type="image_proc" name="image_proc" ns="$(arg ROS_NAMESPACE)"/>
+    </launch>
+    ```
+    - To run the launch file enter `roslaunch camera mono_cam_rect.launch`.
+    - As before you can see the camera feed via `rqt`. Now you can choose between the raw image and differently processed images. The most relevant one is `/mono_cam/image_rect`.
+
+- A settings.yaml and tags.yaml configuration set
+    - you can find them both in the folder `config/apriltag` in this repo
+    - **Important**: copy them to the correct position at `/opt/ros/noetic/share/apriltag_ros/config`. To be able to do this you have to open the folder "as Root" (Right click >> Open as Root >> `jetson`)
+
+## How to...
+### IMU Calibration - Accelerometer
+To obtain high-quality data from the IMU, and specifically from the accelerometer, it is essential to calibrate it, as there are no ideal sensors in practice. In our case, only the stationary behavior is considered. In the absence of motion, the only force acting is the Earth's gravitational field, leading to an acceleration vector magnitude of `1g`. In three-dimensional space, this means that the measured values should align with the surface of the unit sphere.
+
+To collect data for the calibration process, hold the IMU still in various orientations and read the current values. 
+There is a 3D-printed IMU calibration tool available for this at the institute that you can use (write an e-mail to ask or come into the office of a WiMi). 
+Next run the `imu_calibration.launch` file with
+```bash
+roslaunch imu imu_calibration.launch
+```
+and follow the instructions. Samples will be saved in `~/workspace/catkin_ws/config/imu/acceleration_data_raw.txt`.
+
+To process this data use [*Magneto v1.2*](https://sites.google.com/view/sailboatinstruments1/a-download-magneto-v1-2).
+- Open the `acceleration_data_raw.txt` file with *Magneto v1.2* and click *Calibrate*.
+- Open `~/workspace/catkin_ws/config/imu/imu_config.yaml` and adjust the `accelerometer_matrix A^(-1)` and the `accelerometer_bias b` accordingly.
+
+You should then be able to listen to the calibrated IMU data: 
+`rosrun imu calibration_node.py` 
+(have a look into this python file for further explanation)
+
 ## ROS Master Slave Setup
 - install Ubuntu 20.04 and ROS Noetic on another computer (virtual maschine possible) and try to connect the robot the the computer via ROS:
     - http://wiki.ros.org/ROS/Tutorials/MultipleMachines

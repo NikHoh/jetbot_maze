@@ -1,0 +1,10 @@
+<launch>
+    <!--publish data from IMU!-->
+    <node pkg="imu" type="imu_publisher.py" name="imu_publisher" required="true"/>
+
+    <!--Run Imu calibration tool for accelerometer-->
+    <node pkg="imu" type="calibration_tool_accelerometer.py" name="imu_calib_tool" output="screen" required="true">
+       <param name="imu_calib_path" type="str" value="/home/jetson/workspace/catkin_ws/config/imu/acceleration_data_raw.txt"/>
+    </node>
+
+</launch>

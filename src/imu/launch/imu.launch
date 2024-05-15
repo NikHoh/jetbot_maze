@@ -1,0 +1,15 @@
+<launch>
+    <!--publish data from IMU!-->
+    <node pkg="imu" type="imu_publisher.py" name="imu_publisher"/>
+
+    <!--Run Imu calibration (reduce drift!)-->
+    <node pkg="imu" type="calibration_node.py" name="imu_calib">
+       <param name="imu_config_path" type="str" value="/home/jetson/workspace/catkin_ws/config/imu/imu_config.yaml"/>  <!--TODO: change value to current path-->
+    </node>
+
+    <!--Run madgwick filter WITHOUT using magnetic field!-->
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node">
+        <param name="_use_mag" type="bool" value="False"/>
+        <remap from="/imu/data_raw" to="/imu/data_calib"/>
+    </node>
+</launch>

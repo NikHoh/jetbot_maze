@@ -1,0 +1,8 @@
+accelerometer_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+accelerometer_bias:
+  rows: 1
+  cols: 3
+  data: [0, 0, 0]

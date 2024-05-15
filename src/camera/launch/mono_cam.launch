@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="camera" type="mono_cam.py" name="mono_cam">
+        <param name="mono_cam_yaml_path" type="str" value="/home/jetson/workspace/catkin_ws/config/camera/ost_mono.yaml"/>
+    </node>
+</launch>
