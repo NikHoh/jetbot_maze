@@ -109,7 +109,7 @@ More information on the arena, e.g. on size of the base and wall plates and how 
 
 https://github.com/NikHoh/apriltag-maze
 
-*Note: Only the "Set up a maze" part is relevant for you. You do not have to "Craft a maze". Three configurable mazes are located in different rooms of our institute.*
+*Note: Only the "Set up a maze" part is relevant for you. You do not have to "Craft a maze". Three configurable mazes are located in different rooms of our institute. If you want to localize the cube, you have to add 6 more standalone-tags to the 'tags.yaml' - see below*
 
 ## General coding advice
 
@@ -356,6 +356,33 @@ To work properly, apriltag_ros needs:
 - A settings.yaml and tags.yaml configuration set
     - you can find them both in the folder `config/apriltag` in this repo
     - **Important**: copy them to the correct position at `/opt/ros/noetic/share/apriltag_ros/config`. To be able to do this you have to open the folder "as Root" (Right click >> Open as Root >> `jetson`)
+
+#### Test the cube
+
+One task is to detect a cube in the maze. 
+A 3x3x3 cm cube is placed in the maze. The cube is marked on each side with an apriltag (27 mm wide, size = 16.2 mm). The six apriltags of the cube are stored in the 'tags.yaml' as standalone tags. 
+
+Important: if you build your 'tags.yaml' file with the 'maze_builder', the six standalone tags must be added manually:
+
+```python
+standalone_tags:
+  [
+    {id: 992, size: 0.0162},
+    {id: 993, size: 0.0162}, 
+    {id: 994, size: 0.0162}, 
+    {id: 995, size: 0.0162}, 
+    {id: 996, size: 0.0162}, 
+    {id: 997, size: 0.0162} 
+  ]
+```
+
+To build the cube with the April tags yourself, you can use the PDF 'cube_layout_16,2mm.pdf' in the 'images' folder:
+
+1. print the PDF (make sure that no scaling is done during the printing process - 100% scaling, the boxes should be exactly 3mm wide)
+2. cut open the rolled-up mesh of the cube
+3. attach double-sided tape to the tags 
+4. place the cube on the tags and roll it over all the other tags. Make sure there are as few edges and creases in the paper as possible.
+
 
 ## How to...
 ### IMU Calibration - Accelerometer
