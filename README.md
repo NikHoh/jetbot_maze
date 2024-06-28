@@ -360,9 +360,9 @@ To work properly, apriltag_ros needs:
 #### Test the cube
 
 One task is to detect a cube in the maze. 
-A 3x3x3 cm cube is placed in the maze. The cube is marked on each side with an apriltag (27 mm wide, size = 16.2 mm). The six apriltags of the cube are stored in the 'tags.yaml' as standalone tags. 
+A 3x3x3 cm cube is placed in the maze. The cube is marked on each side with an apriltag (27 mm wide, size = 16.2 mm). The six apriltags of the cube are stored in the `tags.yaml` as standalone tags. 
 
-Important: if you build your 'tags.yaml' file with the 'maze_builder', the six standalone tags must be added manually:
+Important: if you build your `tags.yaml` file with the `maze_builder`, the six standalone tags must be added manually:
 
 ```python
 standalone_tags:
@@ -376,7 +376,7 @@ standalone_tags:
   ]
 ```
 
-To build the cube with the April tags yourself, you can use the PDF 'cube_layout_16,2mm.pdf' in the 'images' folder:
+To build the cube with the April tags yourself, you can use the PDF `cube_layout_16,2mm.pdf` in the `images` folder:
 
 1. print the PDF (make sure that no scaling is done during the printing process - 100% scaling, the boxes should be exactly 3mm wide)
 2. cut open the rolled-up mesh of the cube
