@@ -19,16 +19,17 @@
 #     {id: ID, size: SIZE, name: NAME},
 #     ...
 #   ]
+
+#6 standalone tags for the cube
 standalone_tags:
   [
-       {id: 992, size: 0.0162},
-       {id: 993, size: 0.0162},
-       {id: 994, size: 0.0162},
-       {id: 995, size: 0.0162},
-       {id: 996, size: 0.0162},
-       {id: 997, size: 0.0162}
+    {id: 992, size: 0.0162},
+    {id: 993, size: 0.0162}, 
+    {id: 994, size: 0.0162}, 
+    {id: 995, size: 0.0162}, 
+    {id: 996, size: 0.0162}, 
+    {id: 997, size: 0.0162} 
   ]
-
 # ## Tag bundle definitions
 # ### Remarks
 #
