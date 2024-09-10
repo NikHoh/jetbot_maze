@@ -310,6 +310,8 @@ Follow the instructions from:
 
 https://github.com/AprilRobotics/apriltag_ros
 
+Important: Since, you have already installed the apriltag_ros package globally on your JetBot with the command `sudo apt-get install ros-noetic-apriltag-ros`, you can skip the instructions to install it in your catkin workspace. It is already installed! The path to the package is `/opt/ros/noetic/share/apriltag_ros/`.
+
 Make sure that you don't copy/paste comments from the section "Quickstart" blindfold. Use the correct `src` folder (see the file structure above).
 
 #### Test apriltag
